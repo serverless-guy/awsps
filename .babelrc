@@ -1,0 +1,20 @@
+{
+  "presets": [
+    "@babel/preset-env"
+  ],
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-object-rest-spread",
+    ["module-resolver", {
+      "root": ["./src", "./test"],
+      "alias": {
+        "@aws": "./src/aws",
+        "@commands": "./src/commands",
+        "@prompts": "./src/prompts",
+        "@utils": "./src/utils"
+      }
+    }]
+  ],
+  "ignore": ["./node_modules"]
+}
