@@ -1,4 +1,4 @@
-import { executeCommand } from "@utils/executeCommand"
+import { get } from "@aws/configure/get"
 
 /**
  * Get role arn using aws configure command
@@ -6,7 +6,5 @@ import { executeCommand } from "@utils/executeCommand"
  * @return Promise
  */
 export function getRoleArn(profile) {
-  return new Promise((resolve, reject) => {
-    return executeCommand(`aws configure get role_arn --profile ${profile}`, resolve, reject)
-  })
+  return get("role_arn", `--profile ${profile}`)
 }

@@ -1,4 +1,4 @@
-import { executeCommand } from "@utils/executeCommand"
+import { get } from "@aws/configure/get"
 
 /**
  * Get MFA Serial using aws configure command
@@ -6,7 +6,5 @@ import { executeCommand } from "@utils/executeCommand"
  * @return Promise
  */
 export function getMFASerial(profile) {
-  return new Promise((resolve, reject) => {
-    return executeCommand(`aws configure get mfa_serial --profile ${profile}`, resolve, reject)
-  })
+  return get("mfa_serial", `--profile ${profile}`)
 }

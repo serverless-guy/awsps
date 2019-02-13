@@ -1,4 +1,4 @@
-import { executeCommand } from "@utils/executeCommand"
+import { get } from "@aws/configure/get"
 
 /**
  * Get access key id using aws configure command
@@ -6,7 +6,5 @@ import { executeCommand } from "@utils/executeCommand"
  * @return Promise
  */
 export function getAccessKeyId(profile) {
-  return new Promise((resolve, reject) => {
-    return executeCommand(`aws configure get aws_access_key_id --profile ${profile}`, resolve, reject)
-  })
+  return get("aws_access_key_id", `--profile ${profile}`)
 }

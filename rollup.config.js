@@ -12,6 +12,7 @@ const base = {
       "@aws": "./src/aws",
       "@commands": "./src/commands",
       "@prompts": "./src/prompts",
+      "@transformers": "./src/transformers",
       "@utils": "./src/utils"
     }),
     uglify()
