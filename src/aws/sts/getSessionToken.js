@@ -7,8 +7,15 @@ import { executeCommand } from "@utils/executeCommand"
  * @param {string} roleSessionName role session name
  * @return Promise
  */
-export function getSessionToken(profile, mfaSerial, mfaToken) {
+export function getSessionToken(profile, mfaSerial = undefined, mfaToken = undefined) {
   profile   = profile.trim()
+
+  if (!mfaSerial && !mfaToken) {
+    return new Promise((resolve, reject) => {
+      executeCommand(`aws sts get-session-token --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' --profile ${profile} --output json`, resolve, reject)
+    })
+  }
+
   mfaSerial = mfaSerial.trim()
   mfaToken  = mfaToken.trim()
 

@@ -7,6 +7,6 @@ import { executeCommand } from "@utils/executeCommand"
  */
 export function list() {
   return new Promise((resolve, reject) => {
-    return executeCommand(`aws configure list`, resolve, reject)
+    return executeCommand("aws configure list", resolve, reject)
   })
 }

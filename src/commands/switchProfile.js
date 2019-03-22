@@ -27,6 +27,16 @@ export function switchProfile() {
       const awsList = await list()
 
       console.log(awsList)
+    } else {
+      let sessionTokenResponse = await getSessionToken(profile)
+
+      sessionTokenResponse = JSON.parse(sessionTokenResponse)
+
+      await setTemporaryCredentials(sessionTokenResponse[0], sessionTokenResponse[1], sessionTokenResponse[2], profile)
+
+      const awsList = await list()
+
+      console.log(awsList)
     }
   })
 }

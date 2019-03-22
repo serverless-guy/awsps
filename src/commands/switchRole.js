@@ -18,11 +18,35 @@ export function switchRole() {
     const profile = matchProfile(assumedRole)
     const mfa = await getMFASerial(profile)
     const roleArn = await getRoleArn(assumedRole)
+    
+    try {
+      let assumedRoleSessionToken = await assumeAwsRole(assumedRole, roleArn)
+
+      assumedRoleSessionToken = JSON.parse(assumedRoleSessionToken)
+
+      await setDefaultCredential(assumedRoleSessionToken[0], assumedRoleSessionToken[1], assumedRoleSessionToken[2])
+
+      const awsList = await list()
+
+      console.log(awsList)
+
+      console.log(chalk.green(`[${assumedRole}]: Assumed role associated with profile ${profile}`))
+    } catch (error) {
+      if (!error.match(/InvalidClientTokenId/)) {
+        console.log("Something went wrong, contact developer.")
+
+        return
+      }
+
+      let mfaToken, sessionTokenResponse
+
+      if (mfa) {
+        ({ mfaToken} = await inputMFAPrompt(profile))
   
-    if (mfa) {
-      const { mfaToken } = await inputMFAPrompt(profile)
-  
-      let sessionTokenResponse = await getSessionToken(profile, mfa, mfaToken)
+        sessionTokenResponse = await getSessionToken(profile, mfa, mfaToken)
+      } else {
+        sessionTokenResponse = await getSessionToken(profile)
+      }
 
       sessionTokenResponse = JSON.parse(sessionTokenResponse)
 
@@ -30,8 +54,8 @@ export function switchRole() {
 
       console.log(chalk.green(`Enabled temporary session for profile ${profile} as default and ${profile}-temp`))
 
-      let assumedRoleSessionToken = await assumeAwsRole(assumedRole, roleArn, mfa, mfaToken)
-  
+      let assumedRoleSessionToken = await assumeAwsRole(assumedRole, roleArn)
+
       assumedRoleSessionToken = JSON.parse(assumedRoleSessionToken)
   
       await setDefaultCredential(assumedRoleSessionToken[0], assumedRoleSessionToken[1], assumedRoleSessionToken[2])

@@ -13,12 +13,17 @@ import { green } from "chalk"
  * @return void
  */
 export async function createProfile() {
-  let newProfileInfo = { ...(await inputProfileNamePrompt()) }
+  let newProfileInfo = {
+    ...(await inputProfileNamePrompt())
+  }
 
-  newProfileInfo = { ...newProfileInfo, ...(await inputAwsAccessKeyIdPrompt(newProfileInfo.profileName)) }
-  newProfileInfo = { ...newProfileInfo, ...(await inputAwsRegionPrompt(newProfileInfo.profileName)) }
-  newProfileInfo = { ...newProfileInfo, ...(await inputAwsSecretPrompt(newProfileInfo.profileName)) }
-  newProfileInfo = { ...newProfileInfo, ...(await inputMFASerialPrompt(newProfileInfo.profileName)) }
+  newProfileInfo = {
+    ...newProfileInfo,
+    ...(await inputAwsAccessKeyIdPrompt(newProfileInfo.profileName)),
+    ...(await inputAwsRegionPrompt(newProfileInfo.profileName)),
+    ...(await inputAwsSecretPrompt(newProfileInfo.profileName)),
+    ...(await inputMFASerialPrompt(newProfileInfo.profileName))
+  }
 
   setCredentials(createProfileTransformer(newProfileInfo))
 

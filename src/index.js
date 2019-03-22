@@ -7,7 +7,7 @@ import cmd from "commander"
 const packageMeta = require("../package.json")
 
 cmd
-  .version(packageMeta.version, '-v, --version')
+  .version(packageMeta.version, "-v, --version")
   .option("-R, --add-role", "Add new AWS Role", createRole)
   .option("-P, --add-profile", "Add new AWS Profile", createProfile)
   .option("-r, --switch-role", "Switch AWS Role", switchRole)
