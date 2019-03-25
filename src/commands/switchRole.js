@@ -32,8 +32,10 @@ export function switchRole() {
 
       console.log(chalk.green(`[${assumedRole}]: Assumed role associated with profile ${profile}`))
     } catch (error) {
-      if (!error.match(/InvalidClientTokenId/)) {
+      if (!error.match(/(InvalidClientTokenId)|(ExpiredToken)/)) {
         console.log("Something went wrong, contact developer.")
+
+        console.log(error)
 
         return
       }
