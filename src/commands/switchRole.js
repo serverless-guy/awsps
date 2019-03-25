@@ -35,8 +35,6 @@ export function switchRole() {
       if (!error.match(/(InvalidClientTokenId)|(ExpiredToken)/)) {
         console.log("Something went wrong, contact developer.")
 
-        console.log(error)
-
         return
       }
 
