@@ -1,6 +1,6 @@
-import alias from "rollup-plugin-alias"
-import babel from "rollup-plugin-babel"
-import { uglify } from "rollup-plugin-uglify"
+import alias from "rollup-plugin-alias";
+import babel from "rollup-plugin-babel";
+import { uglify } from "rollup-plugin-uglify";
 
 const base = {
   plugins: [
@@ -13,11 +13,12 @@ const base = {
       "@commands": "./src/commands",
       "@prompts": "./src/prompts",
       "@transformers": "./src/transformers",
-      "@utils": "./src/utils"
+      "@utils": "./src/utils",
+      "@validations": "./src/validations"
     }),
     uglify()
   ]
-}
+};
 
 export default [
   Object.assign(
@@ -31,4 +32,4 @@ export default [
       }
     }
   )
-]
+];

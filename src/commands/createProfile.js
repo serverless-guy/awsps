@@ -1,11 +1,12 @@
-import { inputProfileNamePrompt } from "@prompts/inputProfileNamePrompt"
-import { inputAwsAccessKeyIdPrompt } from "@prompts/inputAwsAccessKeyIdPrompt"
-import { inputAwsRegionPrompt } from "@prompts/inputAwsRegionPrompt"
-import { inputAwsSecretPrompt } from "@prompts/inputAwsSecretPrompt"
-import { inputMFASerialPrompt } from "@prompts/inputMFASerialPrompt"
-import { createProfileTransformer } from "@transformers/createProfileTransformer"
-import { setCredentials } from "@utils/setCredentials"
-import { green } from "chalk"
+import { inputProfileNamePrompt } from "@prompts/inputProfileNamePrompt";
+import { inputAwsAccessKeyIdPrompt } from "@prompts/inputAwsAccessKeyIdPrompt";
+import { inputAwsRegionPrompt } from "@prompts/inputAwsRegionPrompt";
+import { inputAwsSecretPrompt } from "@prompts/inputAwsSecretPrompt";
+import { inputMFASerialPrompt } from "@prompts/inputMFASerialPrompt";
+import { createProfileTransformer } from "@transformers/createProfileTransformer";
+import { setCredentials } from "@utils/setCredentials";
+import { createProfileValidation } from "@validations/createProfileValidation";
+import { green } from "chalk";
 
 /**
  * Add new profile to aws/credentials file
@@ -15,7 +16,7 @@ import { green } from "chalk"
 export async function createProfile() {
   let newProfileInfo = {
     ...(await inputProfileNamePrompt())
-  }
+  };
 
   newProfileInfo = {
     ...newProfileInfo,
@@ -23,9 +24,11 @@ export async function createProfile() {
     ...(await inputAwsRegionPrompt(newProfileInfo.profileName)),
     ...(await inputAwsSecretPrompt(newProfileInfo.profileName)),
     ...(await inputMFASerialPrompt(newProfileInfo.profileName))
-  }
+  };
 
-  setCredentials(createProfileTransformer(newProfileInfo))
+  newProfileInfo = await createProfileValidation(newProfileInfo);
 
-  console.log(green(`${newProfileInfo.profileName} has been added to credentials file`))
+  setCredentials(createProfileTransformer(newProfileInfo));
+
+  console.log(green(`${newProfileInfo.profileName} has been added to credentials file`));
 }

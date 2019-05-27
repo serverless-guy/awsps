@@ -1,4 +1,4 @@
-import { prompt } from "inquirer"
+import { prompt } from "inquirer";
 
 export function multipleChoicePrompt(message, name, choices) {
   return prompt([
@@ -10,5 +10,5 @@ export function multipleChoicePrompt(message, name, choices) {
         ...choices
       ]
     }
-  ])
+  ]);
 }

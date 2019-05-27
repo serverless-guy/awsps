@@ -1,5 +1,7 @@
-import { inputPrompt } from "@utils/inputPrompt"
+import { inputPrompt } from "@utils/inputPrompt";
 
 export function inputAwsAccessKeyIdPrompt(profile) {
-  return inputPrompt(`Enter AWS access key id for ${profile}: `, "accessKeyId")
+  profile = profile ? profile.trim() : profile;
+
+  return inputPrompt(`Enter AWS access key id for ${profile}: `, "accessKeyId");
 }

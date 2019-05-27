@@ -1,5 +1,7 @@
-import { inputPrompt } from "@utils/inputPrompt"
+import { inputPrompt } from "@utils/inputPrompt";
 
 export function inputMFASerialPrompt(profile) {
-  return inputPrompt(`Enter MFA serial for ${profile}: `, "mfaSerial")
+  profile = profile ? profile.trim() : profile;
+
+  return inputPrompt(`Enter MFA serial for ${profile}: `, "mfaSerial");
 }

@@ -1,16 +1,13 @@
 {
   "name": "awsps",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "AWS Profile Switcher",
   "main": "dist/index.min.js",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf ./lib && mkdir lib",
-    "clean:test": "rimraf ./test/output && mkdir test/output",
-    "clean:compile": "rimraf ./lib/compiled",
     "build:rollup": "rollup -c",
     "build": "npm run build:rollup",
-    "test": "npm run clean:test && mocha --require @babel/register"
+    "build-start": "npm run build && ./bin/awsps"
   },
   "bin": {
     "awsps": "./bin/awsps"
@@ -25,7 +22,13 @@
     "dotenv": "^6.2.0",
     "ini": "^1.3.5",
     "inquirer": "^6.2.2",
+    "joi": "^14.3.1",
     "promptly": "^3.0.3"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": ">=8.10",
+    "npm": ">=6.8.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
