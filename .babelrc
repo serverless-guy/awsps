@@ -13,7 +13,8 @@
         "@commands": "./src/commands",
         "@prompts": "./src/prompts",
         "@transformers": "./src/transformers",
-        "@utils": "./src/utils"
+        "@utils": "./src/utils",
+        "@validations": "./src/validations"
       }
     }]
   ],

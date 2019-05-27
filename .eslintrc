@@ -27,7 +27,7 @@
     ],
     "semi": [
       "error",
-      "never"
+      "always"
     ],
     "no-extra-boolean-cast": "off",
     "no-console": "off"
