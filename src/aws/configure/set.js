@@ -1,4 +1,4 @@
-import { executeCommand } from "@utils/executeCommand"
+import { executeCommand } from "@utils/executeCommand";
 
 /**
  * Set key using aws configure command
@@ -7,6 +7,6 @@ import { executeCommand } from "@utils/executeCommand"
  */
 export function set(key, value, options = "") {
   return new Promise((resolve, reject) => {
-    return executeCommand(`aws configure set ${key} ${value} ${options}`, resolve, reject)
-  })
+    return executeCommand(`aws configure set ${key} ${value} ${options}`, resolve, reject);
+  });
 }

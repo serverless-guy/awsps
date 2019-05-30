@@ -16,10 +16,10 @@ export function getSessionToken(profile, mfaSerial = undefined, mfaToken = undef
     })
   }
 
-  mfaSerial = mfaSerial.trim()
-  mfaToken  = mfaToken.trim()
+  mfaSerial = mfaSerial.trim();
+  mfaToken  = mfaToken.trim();
 
   return new Promise((resolve, reject) => {
     executeCommand(`aws sts get-session-token --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' --serial-number ${mfaSerial} --token-code ${mfaToken} --profile ${profile} --output json`, resolve, reject)
-  })
+  });
 }

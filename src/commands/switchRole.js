@@ -1,24 +1,24 @@
-import { assumableRolesPrompt } from "@prompts/assumableRolesPrompt"
-import { inputMFAPrompt } from "@prompts/inputMFAPrompt"
-import { assumeAwsRole } from "@utils/assumeAwsRole"
-import { loadCredentials } from "@utils/loadCredentials"
-import { matchProfile } from "@utils/matchProfile"
-import { getMFASerial } from "@aws/configure/getMFASerial"
-import { getRoleArn } from "@aws/configure/getRoleArn"
-import { list } from "@aws/configure/list"
-import { getSessionToken } from "@aws/sts/getSessionToken"
-import { setTemporaryCredentials } from "@utils/setTemporaryCredentials"
-import { setDefaultCredential } from "@utils/setDefaultCredential"
-import * as chalk from "chalk"
+import { assumableRolesPrompt } from "@prompts/assumableRolesPrompt";
+import { inputMFAPrompt } from "@prompts/inputMFAPrompt";
+import { assumeAwsRole } from "@utils/assumeAwsRole";
+import { loadCredentials } from "@utils/loadCredentials";
+import { matchProfile } from "@utils/matchProfile";
+import { getMFASerial } from "@aws/configure/getMFASerial";
+import { getRoleArn } from "@aws/configure/getRoleArn";
+import { list } from "@aws/configure/list";
+import { getSessionToken } from "@aws/sts/getSessionToken";
+import { setTemporaryCredentials } from "@utils/setTemporaryCredentials";
+import { setDefaultCredential } from "@utils/setDefaultCredential";
+import * as chalk from "chalk";
 
 export function switchRole() {
-  const loaded = loadCredentials()
+  const loaded = loadCredentials();
 
   return assumableRolesPrompt(loaded).then(async ({ assumedRole }) => {
-    const profile = matchProfile(assumedRole)
-    const mfa = await getMFASerial(profile)
-    const roleArn = await getRoleArn(assumedRole)
-    
+    const profile = matchProfile(assumedRole);
+    const mfa = await getMFASerial(profile);
+    const roleArn = await getRoleArn(assumedRole);
+
     try {
       let assumedRoleSessionToken = await assumeAwsRole(assumedRole, roleArn)
 

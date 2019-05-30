@@ -1,42 +1,76 @@
-import { profileListPrompt } from "@prompts/profileListPrompt"
-import { inputMFAPrompt } from "@prompts/inputMFAPrompt"
-import { loadCredentials } from "@utils/loadCredentials"
-import { matchProfile } from "@utils/matchProfile"
-import { getMFASerial } from "@aws/configure/getMFASerial"
-import { getSessionToken } from "@aws/sts/getSessionToken"
-import { setTemporaryCredentials } from "@utils/setTemporaryCredentials"
-import { list } from "@aws/configure/list"
+import { profileListPrompt } from "@prompts/profileListPrompt";
+import { inputMFAPrompt } from "@prompts/inputMFAPrompt";
+import { loadCredentials } from "@utils/loadCredentials";
+import { matchProfile } from "@utils/matchProfile";
+import { getMFASerial } from "@aws/configure/getMFASerial";
+import { getSessionToken } from "@aws/sts/getSessionToken";
+import { clearDefaultCredential } from "@utils/clearDefaultCredential";
+import { setTemporaryCredentials } from "@utils/setTemporaryCredentials";
+import { list } from "@aws/configure/list";
 
-export function switchProfile() {
-  const loaded = loadCredentials()
+export async function switchProfile(hasToken = true) {
+  clearDefaultCredential();
 
-  return profileListPrompt(loaded).then(async ({ profile }) => {
-    profile = matchProfile(profile)
+  const loadedCredentials = loadCredentials();
 
-    const mfa = await getMFASerial(profile)
+  let { profile } = await profileListPrompt(loadedCredentials);
 
-    if (mfa) {
-      const { mfaToken } = await inputMFAPrompt(profile)
-  
-      let sessionTokenResponse = await getSessionToken(profile, mfa, mfaToken)
+  profile = matchProfile(profile);
 
-      sessionTokenResponse = JSON.parse(sessionTokenResponse)
+  const mfa = await getMFASerial(profile);
 
-      await setTemporaryCredentials(sessionTokenResponse[0], sessionTokenResponse[1], sessionTokenResponse[2], profile)
+  if (!hasToken && !mfa) {
+    const credential = loadedCredentials[profile];
 
-      const awsList = await list()
+    await setTemporaryCredentials(
+      credential.aws_access_key_id,
+      credential.aws_secret_access_key,
+      undefined,
+      profile
+    );
+    
+    const awsList = await list();
 
-      console.log(awsList)
-    } else {
-      let sessionTokenResponse = await getSessionToken(profile)
+    console.log(awsList);
 
-      sessionTokenResponse = JSON.parse(sessionTokenResponse)
+    return;
+  }
 
-      await setTemporaryCredentials(sessionTokenResponse[0], sessionTokenResponse[1], sessionTokenResponse[2], profile)
+  if (mfa) {
+    const { mfaToken } = await inputMFAPrompt(profile);
 
-      const awsList = await list()
+    let sessionTokenResponse = await getSessionToken(profile, mfa, mfaToken);
 
-      console.log(awsList)
-    }
-  })
+    sessionTokenResponse = JSON.parse(sessionTokenResponse);
+
+    await setTemporaryCredentials(
+      sessionTokenResponse[0],
+      sessionTokenResponse[1],
+      sessionTokenResponse[2],
+      profile
+    );
+
+    const awsList = await list();
+
+    console.log(awsList);
+
+    return;
+  }
+
+  let sessionTokenResponse = await getSessionToken(profile);
+
+  sessionTokenResponse = JSON.parse(sessionTokenResponse);
+
+  await setTemporaryCredentials(
+    sessionTokenResponse[0],
+    sessionTokenResponse[1],
+    sessionTokenResponse[2],
+    profile
+  );
+
+  const awsList = await list();
+
+  console.log(awsList);
+
+  return;
 }

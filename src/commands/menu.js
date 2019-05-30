@@ -8,6 +8,7 @@ const menuItems = [
   { name: "New profile", value: createProfile },
   { name: "New Role", value: createRole },
   { name: "Switch profile", value: switchProfile },
+  { name: "Switch profile (No Token)", value: () => switchProfile(false) },
   { name: "Switch role", value: switchRole }
 ];
 
