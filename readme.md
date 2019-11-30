@@ -1,4 +1,7 @@
 # awsps  
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/serverless-guy/awsps.svg)](https://greenkeeper.io/)
+
 AWS Profile Switcher  
 
 ## Installation  
